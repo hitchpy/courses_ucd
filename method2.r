@@ -18,7 +18,8 @@ count_freqR=function(fname){
 	command = paste('cat',fname,'|cut -f',coln,'-d ,|tail -n+2')
 	arrdelay = system(command,intern=TRUE)
 	
-	arrdelay = suppressWarnings( as.integer( arrdelay ))[ !is.na( arrdelay )]	
+	arrdelay = suppressWarnings( as.integer( arrdelay ))
+    arrdelay = arrdelay[ !is.na( arrdelay )]	
 #change to table method 	
 #	for(i in 1:length(arrdelay) ){
 #   freqtable[arrdelay[i]]=freqtable[arrdelay[i]]+1
@@ -35,7 +36,7 @@ main_func=function(fnames){
 
   len = sum( main_table)
   med =names( which( cumsum( main_table) >= len/2 )[ 1 ] )
-  me = sum( as.integer( names( main_table)) * main_table ) / sum( main_table)
+  me = sum( as.integer( names( main_table)) * main_table ) / len
   std = sqrt( sum( as.integer( names( main_table))^2 * main_table ) - ( me * len) )
   list(mean=me,sd=std,median=med)
 }
