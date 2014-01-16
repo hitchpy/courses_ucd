@@ -1,10 +1,13 @@
-
+#Formatting and comment
 
 fnames=list.files(,pattern='*.csv')
 
-count_freqR=function(fname){
 
- #   freqtable=rep(0.0,6000)
+count_freqR=function(fname){
+#this is the handling function to do
+# 1, base on the header type, get column number
+# 2, extract the ArrDelay, load into R and turn to int, get rid of NA
+# 3, return Freq table
 	headerLine <- readLines(fname, n=1)
     headerFields <- unlist(strsplit(headerLine, split=","))
     if('"ARR_DELAY"' %in% headerFields){
@@ -30,6 +33,10 @@ count_freqR=function(fname){
 
 ##calling the method to return tables for each year/month
 main_func=function(fnames){
+#Not sure how to merge the data properly
+#sort data into a freq table but with repetitive names.
+#compute statistics
+
   all_table = lapply( fnames,count_freqR)
   main_table = do.call( c,all_table)
   main_table = main_table[order( as.integer( names( main_table)))]
@@ -37,6 +44,6 @@ main_func=function(fnames){
   len = sum( main_table)
   med =names( which( cumsum( main_table) >= len/2 )[ 1 ] )
   me = sum( as.integer( names( main_table)) * main_table ) / len
-  std = sqrt( sum( as.integer( names( main_table))^2 * main_table ) - ( me * len) )
+  std = sqrt( sum( as.integer( names( main_table))^2 * main_table )/len -  me )
   list(mean=me,sd=std,median=med)
 }
