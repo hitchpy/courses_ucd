@@ -1,6 +1,7 @@
 useDynLib(ArrDelays)
 export(main_funcR)
 export(main_funcC)
+export(IntegerFrequencyTable)
 S3method(mean, "IntegerFrequencyTable")
 S3method(sd, "IntegerFrequencyTable")
 S3method(median, "IntegerFrequencyTable")

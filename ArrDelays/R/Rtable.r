@@ -25,7 +25,12 @@ count_freqR=function(fname){
 
     table(arrdelay)
 }
-
+IntegerFrequencyTable = 
+function(table)
+{
+  class(table) = c("IntegerFrequencyTable", "DiscreteFrequencyTable", "table")
+  table
+}
 ##calling the method to return tables for each year/month
 main_funcR=function(fnames){
   all_table = lapply( fnames,count_freqR)
