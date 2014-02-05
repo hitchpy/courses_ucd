@@ -13,6 +13,6 @@ main_funcC = function(fnames){
   for( fname in fnames){
     results=results+count_freqC(fname)
 	}
-  names(results)=-3000:2999
+  names(results)= c(-3000:2999)
   IntegerFrequencyTable(results)
 }
