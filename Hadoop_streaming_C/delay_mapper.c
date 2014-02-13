@@ -40,7 +40,6 @@ main(int nargs, char *argv[])
 {
 
 	char line[MAX_NUM_CHARS];
-	fgets(line, MAX_NUM_CHARS, stdin);
 	while(fgets(line, MAX_NUM_CHARS, stdin)) {
 	readRecord(line, FIELD_NUM);
     }
