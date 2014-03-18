@@ -11,8 +11,11 @@ in R.
 
 To run the example, download the repository. open a R session. install `devtools` using 
 `install.packages("devtools")`. Then install the latest `shiny` and `ShinyDash` from github:
+
 >devtools::install_github("ShinyDash", "trestletech")
+
 >devtools::install_github("leaflet-shiny", "jcheng5")
+
 In order to do that, you might need R version greater than 3.0.2.
 
 Then in R, `library(shiny)`. issue `runApp("Dir/to download folder/")` 
