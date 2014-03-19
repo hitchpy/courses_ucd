@@ -3,10 +3,10 @@ library(ggplot2)
 library(maps)
 
 ## Loading the data
-Dest = c('IND','LAX','SFO','NYC')
-ArrDelay = c(32,44,22,29)
-Lat = c(39.717, 33.94, 37.62,40 )
-Long = c(-86.29, -118.40, -122.37, -40 )
+Dest = c('IND','LAX','SFO','JFK')
+ArrDelay = c(32,-44,22,-29)
+Lat = c(39.717, 33.94, 37.62,40.63 )
+Long = c(-86.29, -118.40, -122.37, -73.7789 )
 mydata = data.frame(Dest, ArrDelay, Lat, Long)
 
 
@@ -23,20 +23,12 @@ shinyServer(function(input, output, session) {
     latRng <- range(bounds$north, bounds$south)
     lngRng <- range(bounds$east, bounds$west)
     
-    #subset(mydata,
-	##### Need to change the notation for lat, long later
-     #      Lat >= latRng[1] & Lat <= latRng[2] &
-      #       Long >= lngRng[1] & Long <= lngRng[2])
-	 mydata
+    subset(mydata,
+	
+           Lat >= latRng[1] & Lat <= latRng[2] &
+             Long >= lngRng[1] & Long <= lngRng[2])
   })
   
-   # The top N cities (by population) that are within the visible bounds
-  # of the map
- # topCitiesInBounds <- reactive({
-  #  cities <- citiesInBounds()
-   # cities <- head(cities[order(cities[[popCol()]], decreasing=TRUE),],
-   #                as.numeric(input$maxCities))
-  #})
   
   # Create the map; this is not the "real" map, but rather a proxy
   # object that lets us control the leaflet map on the page.
@@ -59,12 +51,12 @@ shinyServer(function(input, output, session) {
     map$addCircle(
       cities$Lat,
       cities$Long,
-      cities[["ArrDelay"]] * radiusFactor / max(5, input$map_zoom)^2,
+      abs(cities[["ArrDelay"]]) * radiusFactor / max(5, input$map_zoom)^2,
       row.names(cities),
       list(
         weight=1.2,
         fill=TRUE,
-        color='#4A9'
+        color=ifelse(cities[["ArrDelay"]]< 0,'red','#4A9')
       )
     )
   })
@@ -82,8 +74,6 @@ shinyServer(function(input, output, session) {
       content <- as.character(tagList(
         tags$strong(city$Dest),
         tags$br(),
-        #sprintf("Estimated population, %s:", input$year),
-        tags$br(),
         prettyNum(city[["ArrDelay"]], big.mark=',')
       ))
       map$showPopup(event$lat, event$lng, content, event$id)
@@ -97,11 +87,45 @@ shinyServer(function(input, output, session) {
       lat = mean(c(input$map_bounds$north, input$map_bounds$south)),
       lng = mean(c(input$map_bounds$east, input$map_bounds$west)),
       zoom = input$map_zoom
-      #shownCities = nrow(topCitiesInBounds()),
-      #totalCities = nrow(citiesInBounds())
+
     )
   })
   
+ output$data <- renderTable({
+   if (nrow(CitiesInBounds()) == 0)
+     return(NULL)
+   
+   data.frame(
+     Airport = CitiesInBounds()$Dest,
+     Arrival_Delay = CitiesInBounds()$ArrDelay )
+ }, include.rownames = FALSE)
+ 
+ 
+ output$cityTimeSeriesLabel <- renderText({
+   if (is.null(selectedCity)) {
+     'Delays for all visible airports'
+   } else {
+     paste('Barplot for selected airport ',
+           selectedCity$Dest,
+           ', ',
+           selectedCity$ArrDelay,
+           sep='')
+   }
+ })
+ 
+ output$cityTimeSeries <- renderPlot({
+   cities <- NULL
+   if (!is.null(selectedCity))
+     cities <- selectedCity
+   else
+     cities <- CitiesInBounds()
+   
+   airports = as.character(cities$Dest)
+   delay = cities$ArrDelay
+   barplot(delay, names.arg = airports)
+   
+   
+   })
   
   
   

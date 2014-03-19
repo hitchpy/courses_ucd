@@ -6,6 +6,8 @@ Visualization with interactive plots
 We go over generating SVG plots within R, post-editing and inserting into HTML to achieve 
 interactive effects. Some D3 examples, using maps etc. 
 
+**Note**:This is a direct adaptation from jcheng5's example code. Which doesn't have any documentation.
+
 Here I use the most convenient way(with `shiny` package in R) to build a web page with interactive maps of Airline Delay data, plus several panels that can adjust itself when I click on different 
 parts on the map. The whole process is packaged in `leaflet`, incorporating javascript library *Leaflet* and *Shiny* package in R.
 

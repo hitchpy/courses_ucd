@@ -27,19 +27,13 @@ shinyUI(fluidPage(
   ),
   hr(),
   fluidRow(
-    column(3,h4("hi")
-     # selectInput('year', 'Year', c(2000:2010), 2010),
-      #selectInput('maxCities', 'Maximum cities to display', choices=c(
-       # 5, 25, 50, 100, 200, 500, 2000, 5000, 10000, All = 100000
-      #), selected = 100)
-    ),
     column(4,
-      h4('Visible cities')
-      #tableOutput('data')
+      h4('Visible cities'),
+      tableOutput('data')
     ),
-    column(5,h4("hi2")
-      #h4(id='cityTimeSeriesLabel', class='shiny-text-output'),
-      #plotOutput('cityTimeSeries', width='100%', height='250px')
+    column(5,
+      h4(id='cityTimeSeriesLabel', class='shiny-text-output'),
+      plotOutput('cityTimeSeries', width='100%', height='250px')
     )
   )
 ))
