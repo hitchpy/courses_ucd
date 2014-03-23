@@ -109,6 +109,11 @@ recommend = function(contents){
     mycorpus = tm_map(mycorpus, stripWhitespace)
 	dtm = DocumentTermMatrix(mycorpus,control=list(wordLengths=c(1,20), #Tfidf
               removeNumbers=FALSE,weighting=weightTfIdf))
+	##findFreqTerms()
+	##findAssocs() 
+	##Both perform poorly
+	##word2vec don't have R porting yet.
+	##Need to be trained on a large scale of text.
 }
 
 
