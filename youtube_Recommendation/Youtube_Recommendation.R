@@ -72,6 +72,8 @@ actors = unique(c(getNames(video[[1]][389]), getNames(video[[2]][389]), recursiv
 getUrl = function(words){# a char vector
     ##only works if this page exist, and
 	## has no ambiguity with other things
+	## Better to get infomation from some 
+	## structured data resources
     pre = 'https://en.wikipedia.org/wiki/'
 	words = strsplit(words, " ")
 	words = sapply(words,paste,collapse='_')
@@ -87,13 +89,26 @@ getContent = function(words){
     ### run with actors( three names from row 389)
     myurl = getUrl(words)
     txt = sapply(myurl, function(u) getURLContent(u, curl = con))
-	
-
-
+	contents = sapply(1:length(txt),function(i){
+	    doc = htmlParse(txt[[i]])
+		nodes = getNodeSet(doc, "//p")##lacks some important info in 
+		#other places like in a table.
+		texts = sapply(nodes,xmlValue)
+        paste(texts,collapse='')
+	})
+return(contents)
 }
 
-recommend = function(info){
-
+recommend = function(contents){
+    ## With the assumption of more then two key words
+	## with build a length(content) * words DocTermMatrix
+	## using tm package
+	require(tm)
+	mycorpus = Corpus(VectorSource(contents,encoding="UTF-8"))
+    mycorpus = tm_map(mycorpus, removePunctuation)
+    mycorpus = tm_map(mycorpus, stripWhitespace)
+	dtm = DocumentTermMatrix(mycorpus,control=list(wordLengths=c(1,20), #Tfidf
+              removeNumbers=FALSE,weighting=weightTfIdf))
 }
 
 
