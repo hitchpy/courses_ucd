@@ -1,8 +1,0 @@
-Package: ArrDelays
-Title: compute ArrDelays' mean,median,sd
-Version: 0.1-0
-Description: several methods to compute the stats more efficiently,respect to time and memory usage
-Author: yu pei <whpei@ucdavis.edu>
-Maintainer: yu pei <whpei@ucdavis.edu>
-License: BSD
-

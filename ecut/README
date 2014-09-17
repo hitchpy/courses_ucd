@@ -1,3 +1,0 @@
-This is a very simple implementation of cut that respects delimiters within quotes.
-This is intended to be used for extracting fields out of a CSV file which contains
-values that have , within them.
